@@ -1,0 +1,71 @@
+﻿@model List<Album.Models.FotoModel>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>FotoModel</h4>
+    <hr />
+    @foreach (var item in Model)
+    {
+<dl class="row">
+    <dt class="col-sm-2">
+    </dt>
+    <dd class="col-sm-10">
+        @Html.HiddenFor(model => item.albumId)
+    </dd>
+    <dt class="col-sm-2">
+    </dt>
+    <dd class="col-sm-10">
+        @Html.HiddenFor(model => item.id)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => item.title)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => item.title)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => item.url)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => item.url)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => item.thumbnailUrl)
+    </dt>
+    <dd class="col-sm-10">
+        <img class="col-sm-2" src="@item.thumbnailUrl" />
+    </dd>
+    <dt></dt>
+    <dd class="col-sm-10">
+        <button type="button" onclick="getComments(@item.id)">Ver Comentarios </button>
+    </dd>
+    <dt>Comentarios</dt>
+    <dd class="col-sm-10">
+        <div id=@item.id style="display:none">
+            @Html.PartialAsync("_Comments");
+        </div>
+    </dd>
+</dl>
+    }
+
+
+
+</div>
+<script>
+
+    function getComments(id) {
+        $.get('/Album/Comments?id=' + id,
+            function (data) {
+                if (data !== "No") {
+                    $('#' + id).html(data);
+                    $('#' + id).show();
+                }
+            }
+        );
+    }
+</script>
